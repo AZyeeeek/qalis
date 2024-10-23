@@ -1,0 +1,247 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><!-- InstanceBegin template="/Templates/popup.dwt" codeOutsideHTMLIsLocked="false" -->
+
+<head>
+	<!-- InstanceBeginEditable name="doctitle" -->
+	<title>Quadratic Factoriser, Maths First, Institute of Fundamental Sciences, Massey University</title>
+	<!-- InstanceEndEditable -->
+	<!-- InstanceBeginEditable name="meta" -->
+	<meta href="Author" content="IFS, Massey University">
+	<meta href="keywords"
+		content="maths,mathematics,math,mathematician,institute,fundamental,sciences,university, massey, new zealand">
+	<!-- InstanceEndEditable -->
+	<script type="text/javascript" src="fsmenu.js"></script>
+	<link rel="stylesheet" type="text/css" href="listmenu_v.css" id="listmenu-v" title="Vertical 'Earth'" />
+	<link rel="stylesheet" type="text/css" href="massey.css" />
+	<noscript>
+		<link rel="stylesheet" type="text/css" href="listmenu_fallback.css" />
+	</noscript>
+	[an error occurred while processing this directive]<!-- InstanceBeginEditable name="head" -->
+	<link href="http://ifs.massey.ac.nz/massey.css" rel="stylesheet" type="text/css">
+	<script>
+		function getHCF(x, y) {
+			var w
+			while (y != 0) {
+				w = x % y;
+				x = y;
+				y = w;
+			};
+			hcf = x;
+			return hcf;
+		}
+
+		function getLCM(x, y) {
+			var hcf = getHCF(x, y);
+			var lcm = (x * y) / hcf;
+			return lcm;
+		}
+		function isANumber(n) {
+			found = true
+			if (!parseFloat(n)) { if (n != 0 && n != "-") { found = false }; } else {
+				for (var i = 0; i < n.length; i++) {
+					if (n.charAt(i) != " ") {
+						if (!parseFloat(n.charAt(i))) { if (n.charAt(i) != 0 && n.charAt(i) != "-") { found = false; } }
+					} //end if charAt
+				} //end for
+			}; return found// end else
+		} //end function isANumber
+
+		function getfact(n) {
+			if (Math.sqrt(n) == Math.floor(Math.sqrt(n))) { if (n != 1) { f = Math.sqrt(n) }; f += "x" } //integer root
+			else { f = "xsqrt(" + n + ")" } //other root
+			return f
+		}
+
+
+	</script>
+
+	<script language="Javascript">
+		function factor(form) {
+			quad = ""; factors = ""
+			//alert("a=" + a + " b=" + b + " c=" + c);
+			if (!(isANumber(form.a.value) && isANumber(form.b.value) && isANumber(form.c.value))) { quad = "Some of your entries are not integers.  Please alter." }
+			else {
+				if (form.a.value == "") { a = 1 } else { a = parseFloat(form.a.value) }
+				if (form.b.value == "") { b = 1 } else { b = parseFloat(form.b.value) }
+				if (form.a.value == "-") { a = -1 }
+				if (form.b.value == "-") { b = -1 }
+				if (form.c.value == "") { c = 0 } else { c = parseFloat(form.c.value) }
+
+				if (a != 1 && a != -1) { quad = a + "x^2 " }
+				if (a == 1) { quad = "x^2 " }
+				if (a == -1) { quad = "-x^2 " }
+				if (b > 0 && b != 1) { quad += "+ " + b + "x " }
+				if (b == 1) { quad += "+ x " }
+				if (b == -1) { quad += "- x " }
+				if (b < 0 && b != -1) { quad += "- " + (-1 * b) + "x " }
+				if (c > 0) { quad += "+ " + c }
+				if (c < 0) { quad += "- " + (-1 * c) }
+				//  previous part writes to quadratic again
+
+				hcf = getHCF(a, b); if (hcf < 0) { hcf = -1 * hcf }  //forces hcf to be positive
+				if (a == 0) { factors = " is not a quadratic expression." } else {
+
+					if (c == 0) {
+						if (b == 0) { factors = " is already factorised." }//end b = 0
+						else // b != 0
+						{ //no common numeric factor
+							factors += " factorises to "
+							if (a > 0 && b > 0 && hcf == 1) { factors += "x("; if (a != 1) { factors += a }; factors += "x + " + b + ")." }
+							if (a > 0 && b < 0 && hcf == 1) { factors += "x("; if (a != 1) { factors += a }; factors += "x - " + (-1 * b) + ")."; }
+
+							if (a > 0 && b > 0 && hcf > 1) //a positive, b positive, common factor
+							{ factors += hcf + ", x("; if (a / hcf != 1) { factors += a / hcf }; factors += "x + " + b / hcf + ")."; }
+							if (a > 0 && b < 0 && hcf > 1) //a positive, b negative, common factor
+							{ factors += hcf + ", x("; if (a / hcf != 1) { factors += a / hcf }; factors += "x - " + (-1 * b / hcf) + ")."; }
+
+							if (a < 0 && b > 0 && hcf > 1) //a negative, b positive, common factor
+							{ factors += hcf + ", x(" + b / hcf + " - "; if (a / hcf != -1) { factors += -1 * a / hcf }; factors += "x)."; }
+							if (a < 0 && b < 0 && hcf > 1) //a negative, b negative, common factor
+							{ factors += "-" + hcf + "x("; if (a / hcf != -1) { factors += -1 * a / hcf }; factors += "x + " + (-1 * b / hcf) + ")."; }
+							if (a < 0 && b > 0 && hcf == 1) //a negative, b positive, no common factor
+							{ factors += "x(" + b + " - "; if (a != -1) { factors += -1 * a }; factors += "x)."; }
+							if (a < 0 && b < 0 && hcf == 1) //a negative, b negative, no common factor
+							{ factors += "-x("; if (a != -1) { factors += -1 * a }; factors += "x + " + (-1 * b) + ")."; }
+						} //end b != 0
+					} //end c = 0
+
+					else {  // c != 0
+						det = b * b - (4 * a * c);
+						if (det < 0) { factors = " has no real factors.  The discriminant, b*b - 4*a*c, is a negative number." }
+						if (Math.floor(Math.sqrt(det)) == Math.sqrt(det)) { int = true } else { int = false }
+						if (det >= 0 && int) {
+							root = Math.sqrt(det)
+							fac1 = b + root; fac2 = b - root;
+							if (root == 0) { fac1 = b; fac2 = b }
+							cf1 = getHCF(fac1, 2 * a); cf2 = getHCF(fac2, 2 * a);
+							outer = cf1 * cf2 / (4 * a)
+							x1 = 2 * a / cf1; x2 = 2 * a / cf2; f1 = fac1 / cf1; f2 = fac2 / cf2;
+							factors = " factorises to ";
+							if (outer != 1) { factors += outer };
+							factors += "(";
+							if (x1 != 1) { factors += (x1) };
+							factors += "x";
+							if (f1 > 0) { factors += " + " + f1 } else { factors += " - " + (-1 * f1) };
+							factors += ")("
+							if (x2 != 1) { factors += x2 };
+							factors += "x";
+							if (f2 > 0) { factors += " + " + f2 } else { factors += " - " + -1 * f2 };
+							factors += ")"
+						}  //end if det >= 0 and int
+						if (det >= 0 && !int) {
+							factors = " has real non integer factors of ";
+							nb = b / (2 * a);
+							if (a != 1 && a != -1) { factors += a }; if (a == -1) { factors += "-" }
+							factors += "(x";
+							if (nb == Math.floor(nb)) { //not a fraction
+								if (nb > 0) { factors += " + " + nb } else { factors += " - " + (-1 * nb) }
+							} else { //a fraction
+								myfac = getHCF(b, 2 * a)
+								if (a / myfac > 0 && b / myfac > 0) { factors += " + " + b / myfac + "/" + (2 * a / myfac) }
+								if (a / myfac > 0 && b / myfac < 0) { factors += " - " + (-1 * b / myfac) + "/" + (2 * a / myfac) }
+								if (a / myfac < 0 && b / myfac > 0) { factors += " - " + (b / myfac) + "/" + (-2 * a / myfac) };
+								if (a / myfac < 0 && b / myfac < 0) { factors += " + " + (-1 * b / myfac) + "/" + (-2 * a / myfac) };
+							};
+							factors += " + ";
+							fr = getHCF(det, (4 * a * a)); frrt = Math.sqrt(fr);
+							if (2 * a / frrt != 1 && 2 * a / frrt != -1) {
+								factors += "1/";
+								if (a > 0) { factors += 2 * a / frrt; } else { factors += -2 * a / frrt; }
+							}
+							factors += " sqrt(" + det / fr + ")"
+							factors += ")(x"
+							if (nb == Math.floor(nb)) { //not a fraction
+								if (nb > 0) { factors += " + " + nb } else { factors += " - " + (-1 * nb) }
+							} else { //a fraction
+								myfac = getHCF(b, 2 * a)
+								if (a / myfac > 0 && b / myfac > 0) { factors += " + " + b / myfac + "/" + (2 * a / myfac) }
+								if (a / myfac > 0 && b / myfac < 0) { factors += " - " + (-1 * b / myfac) + "/" + (2 * a / myfac) }
+								if (a / myfac < 0 && b / myfac > 0) { factors += " - " + (b / myfac) + "/" + (-2 * a / myfac) };
+								if (a / myfac < 0 && b / myfac < 0) { factors += " + " + (-1 * b / myfac) + "/" + (-2 * a / myfac) };
+							};
+							factors += " - ";
+							fr = getHCF(det, (4 * a * a)); frrt = Math.sqrt(fr);
+							if (2 * a / frrt != 1 && 2 * a / frrt != -1) { factors += "1/"; if (a > 0) { factors += 2 * a / frrt; } else { factors += -2 * a / frrt; } }
+							factors += " sqrt(" + det / fr + ")"
+							factors += ")"
+						}  //end if det >= 0and int
+					} //end c != 0
+					if (b == 0 && ((a > 0 && c < 0) || (a < 0 && c > 0))) {
+						fact1 = ""; fact2 = "";
+						cofac = getHCF(a, c); if (cofac < 0) { cofac = -1 * cofac };
+						factors = " factorises to "
+						if (cofac != 1) { factors += cofac };
+						if (a > 0) {
+							fact1 = "(";
+							if (Math.sqrt(a / cofac) == Math.floor(Math.sqrt(a / cofac))) {
+								if (a / cofac != 1) { fact1 += Math.sqrt(a / cofac) }; fact1 += "x"
+							} //integer root
+							else { fact1 += "xsqrt(" + a / cofac + ")" } //other root
+							if (Math.sqrt(-1 * c / cofac) == Math.floor(Math.sqrt(-1 * c / cofac))) { fact2 = Math.sqrt(-1 * c / cofac) } else { fact2 = "sqrt(" + (-1 * c / cofac) + ")" }; fact2 += ")"
+							factors += fact1 + " + " + fact2 + fact1 + " - " + fact2
+						} else {//c > 0
+							if (Math.sqrt(-1 * a / cofac) == Math.floor(Math.sqrt(-1 * a / cofac))) {
+								if (-1 * a / cofac != 1) { fact1 = Math.sqrt(-1 * a / cofac) }; fact1 += "x"
+							} //integer root
+							else { fact1 = "xsqrt(" + -1 * a / cofac + ")" } //other root
+							fact1 = fact1 + ")"
+							if (Math.sqrt(c / cofac) == Math.floor(Math.sqrt(c / cofac))) { fact2 = Math.sqrt(c / cofac) } else { fact2 = "sqrt(" + (c / cofac) + ")" };
+							fact2 = "(" + fact2
+							factors += fact2 + " + " + fact1 + "" + fact2 + " - " + fact1
+						}
+					} //end of difference of 2 squares
+				} //end a not 0
+			} //end numbers entered
+			form.ans.value = quad + factors
+		} //end function factor
+	</script>
+	<!-- InstanceEndEditable -->
+</head>
+
+<body link="#CC6600" leftmargin="0" topmargin="0">
+	<table width="100%" border="0" cellpadding="0" cellspacing="2">
+		<tr>
+			<td width="10"></td>
+			<td valign="top"> <!-- InstanceBeginEditable name="MainContent" -->
+				<h2>Quadratic Function Factoriser </h2>
+				<p>If the roots of a quadratic equation &nbsp;&nbsp;<span
+						class="matheq"><em>ax</em><sup>2</sup>+<em>bx</em>+<em>c</em></span>&nbsp;&nbsp;
+					are <span class="matheq">&alpha;</span> and<span class="matheq"> &beta;</span>, then we can
+					factorise &nbsp;&nbsp;<span class="matheq"><em>ax</em><sup>2</sup>+<em>bx</em>+<em>c</em>
+					</span>to<span class="matheq"> <em>a</em>(<em>x</em>&minus;&alpha;)(<em>x</em>&minus;&beta;)</span>.
+					You can get your quadratic function factorised here. To learn how to do this yourself go to <a
+						href="">this page</a>. </p>
+				<form>
+					<table border="0" align="center" cellpadding="5" cellspacing="0" BGCOLOR="#669900">
+						<tr BGCOLOR="#003366">
+							<td align="center">
+								<p class="matheq">
+									<font color="#FFFFFF"><strong>Enter the integer coefficients of a quadratic
+											function:</strong></font>
+								</p>
+								<p>
+									<font color="#FFFFFF"><strong><input type="text" name="a"
+												size="3"><i>x</i><sup>2</sup>&nbsp;+&nbsp;<input type="text" name="b"
+												size="3"><i>x</i>&nbsp;+&nbsp;<input type="text" name="c"
+												size="3"></strong></font>
+								</p>
+								<p>
+									<input type="button" value="Factorise My Equation" onClick="factor(this.form)">
+								</p>
+								<p>
+									<textarea name="ans" cols="60" rows="3"></textarea>
+								</p>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</form>
+				<!-- InstanceEndEditable -->
+
+			</td>
+		</tr>
+	</table>
+</body>
+<!-- InstanceEnd -->
+
+</html>
